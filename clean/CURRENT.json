@@ -11,7 +11,7 @@
     "status": "WORKSTATION_GH_READY_VPS_AUTH_REQUIRED",
     "repository": "bosshair-beep/eve-agent-lab",
     "visibility": "public",
-    "push_test": "PENDING"
+    "push_test": "PASS"
   },
   "loop_policy_path": "/opt/xiaozhi-clean/agent-lab/LOOP_POLICY.md",
   "notes": "P2.6 control plane. No autonomous implementation. Vietnamese migration not started. apply_live() is the mandatory ticket mutation API."
