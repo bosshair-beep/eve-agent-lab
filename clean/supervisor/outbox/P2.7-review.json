@@ -1,0 +1,21 @@
+{
+  "message_type": "SUPERVISOR_REVIEW_REQUEST",
+  "project": "CLEAN_VI_MIGRATION",
+  "ticket_id": "T-P2.7-001",
+  "status": "BLOCKED_SUPERVISOR",
+  "summary": "P2.7 one authorized bound WS attempt closed with code 1000 before a usable turn. No retry. get_lunar not observed. Implementer still disabled.",
+  "budget": {
+    "patch_attempts": "0/2",
+    "audit_revisits": "0/2",
+    "verification_runs": "0/3",
+    "subagent_invocations": "2/8",
+    "live_ws_sessions": "1/1",
+    "user_turns": "0/1",
+    "retries": "0/0"
+  },
+  "tests": {"executed": 1, "passed": 0, "failed": 1},
+  "runtime_touched": false,
+  "report": "supervisor/reports/P2.7-live-observation.md",
+  "evidence": "evidence/P2.7/",
+  "requested_decision": ["INVESTIGATE", "STOP", "APPROVE"]
+}

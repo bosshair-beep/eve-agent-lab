@@ -1,0 +1,32 @@
+{
+  "phase": "P2.7_CONTROLLED_LIVE_OBSERVATION",
+  "t0": "2026-09-19T17:08:07+00:00",
+  "t1": "2026-09-19T17:08:07+00:00",
+  "error": "ConnectionClosedOK: received 1000 (OK); then sent 1000 (OK)",
+  "user_text_sent": "Hôm nay là ngày bao nhiêu âm lịch?",
+  "url": "ws://127.0.0.1:8000/xiaozhi/v1/",
+  "device_id": "30:ed:a0:2a:1b:d8",
+  "ws": {},
+  "ws_json": null,
+  "log_hits": {
+    "listen": [],
+    "user": [],
+    "prompt_prefix": [],
+    "prompt_len": [],
+    "funcs": [],
+    "tools": [],
+    "tts_ok": [],
+    "tts_first": [],
+    "token": [],
+    "news": [],
+    "music": [],
+    "exit": [],
+    "title": [],
+    "weather": [],
+    "ip": [],
+    "hello": [],
+    "disconnect": [],
+    "private_cfg": []
+  },
+  "docker_exec_rc": 1
+}

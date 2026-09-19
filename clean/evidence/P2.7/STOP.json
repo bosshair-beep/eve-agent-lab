@@ -1,0 +1,8 @@
+{
+  "stop_reason": "LIVE_TEST_NO_USEFUL_EVIDENCE",
+  "retries": 0,
+  "live_ws_sessions": 1,
+  "user_turns": 0,
+  "error": "ConnectionClosedOK 1000 during single authorized session; detect text not confirmed sent; no matching INFO logs",
+  "do_not_retry": true
+}

@@ -1,7 +1,7 @@
 {
   "project": "CLEAN_VI_MIGRATION",
-  "phase": "P2.6_SUPERVISOR_BRIDGE_AND_LOOP_POLICY",
-  "updated_at": "2026-09-19T16:45:00Z",
+  "phase": "P2.7_CONTROLLED_LIVE_OBSERVATION",
+  "updated_at": "2026-09-19T17:12:00Z",
   "clean_root": "/opt/xiaozhi-clean",
   "live_container": "xz-clean-server",
   "live_prompt": "/opt/xiaozhi-clean/overlays/lucy-lang/agent-base-prompt.txt",
@@ -16,7 +16,8 @@
     "T-0001": "VERIFYING",
     "T-0002": "INVESTIGATING",
     "T-P2": "VERIFYING",
-    "T-P2.6-001": "VERIFYING"
+    "T-P2.6-001": "SUPERVISOR_REVIEW",
+    "T-P2.7-001": "BLOCKED_SUPERVISOR"
   },
   "bootstrap_status": "P2_COMPLETE",
   "p2": {

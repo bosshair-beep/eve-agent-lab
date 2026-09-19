@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-09-19T17:09:00Z",
+  "status": "running",
+  "restart_count": 0,
+  "started_at": "2026-09-19T12:16:29.257407561Z",
+  "prompt_sha256_host": "3407a389979f5da0db2b1f929e253709cf5dee1165e1d90d6351a904d91aab83",
+  "prompt_sha256_container": "3407a389979f5da0db2b1f929e253709cf5dee1165e1d90d6351a904d91aab83",
+  "compose_sha256": "e6073c48f93e9b7eba4fb5a8cc1a47dcb8a3d2a289aa8bffdaf92648441d50dc",
+  "automation_enabled": false,
+  "global_stop": false,
+  "implementer_enabled": false
+}
