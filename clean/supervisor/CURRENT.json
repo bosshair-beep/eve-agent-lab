@@ -1,12 +1,12 @@
 {
   "project": "CLEAN_VI_MIGRATION",
-  "phase": "P2.7_CONTROLLED_LIVE_OBSERVATION",
-  "updated_at": "2026-09-19T17:12:00Z",
+  "phase": "P2.8_WS_HANDSHAKE_FORENSIC",
+  "updated_at": "2026-09-19T17:27:51Z",
   "automation_enabled": false,
   "global_stop": false,
   "implementer_enabled": false,
   "safe_to_enable_implementer": false,
-  "active_ticket_id": "T-P2.7-001",
+  "active_ticket_id": "T-P2.8-001",
   "github": {
     "status": "WORKSTATION_GH_READY_VPS_AUTH_REQUIRED",
     "repository": "bosshair-beep/eve-agent-lab",
@@ -14,5 +14,5 @@
     "push_test": "PASS"
   },
   "loop_policy_path": "/opt/xiaozhi-clean/agent-lab/LOOP_POLICY.md",
-  "notes": "P2.7 one authorized live WS attempt produced no useful pipeline trace (close 1000, no new INFO). No retry. Implementer disabled. Vietnamese migration not started."
+  "notes": "P2.8 forensic: P2.7 close 1000 is pre-handler auth (Client-Id != HMAC). No live WS. Implementer off."
 }
