@@ -1,0 +1,22 @@
+{
+  "message_type": "SUPERVISOR_REVIEW_REQUEST",
+  "project": "CLEAN_VI_MIGRATION",
+  "ticket_id": "T-P2.6-001",
+  "status": "SUPERVISOR_REVIEW",
+  "summary": "P2.6 Supervisor bridge and loop policy are in place. Synthetic tests 24/24. Implementer remains disabled. automation_enabled remains false. GitHub publish from workstation gh login; VPS cannot push until human GitHub auth.",
+  "budget": {
+    "patch_attempts": "0/2",
+    "audit_revisits": "1/2",
+    "verification_runs": "2/3",
+    "subagent_invocations": "3/8"
+  },
+  "tests": {
+    "executed": 24,
+    "passed": 24,
+    "failed": 0
+  },
+  "runtime_touched": false,
+  "report": "supervisor/reports/P2.6-checkpoint.md",
+  "evidence": "supervisor/evidence/P2.6-synthetic-tests.txt",
+  "requested_decision": ["APPROVE", "REJECT", "INVESTIGATE", "STOP"]
+}

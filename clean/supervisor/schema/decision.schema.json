@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Supervisor decision",
+  "type": "object",
+  "required": ["ticket_id", "decision", "reason", "timestamp", "actor"],
+  "properties": {
+    "ticket_id": { "type": "string" },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "APPROVE",
+        "REJECT",
+        "INVESTIGATE",
+        "STOP",
+        "APPROVE_RETRY",
+        "APPROVE_SCOPE_EXPANSION",
+        "APPROVE_NEW_BUDGET"
+      ]
+    },
+    "reason": { "type": "string", "minLength": 1 },
+    "timestamp": { "type": "string" },
+    "actor": { "type": "string", "enum": ["HUMAN", "SUPERVISOR"] },
+    "approved_budget_change": {
+      "type": ["object", "null"],
+      "properties": {
+        "max_patch_attempts": { "type": "integer" },
+        "max_audit_revisits": { "type": "integer" },
+        "max_verification_runs": { "type": "integer" },
+        "max_subagent_invocations": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "files_allowed_add": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+lifecycle:
+  - NEW
+  - AUDITING
+  - ROOT_CAUSE_FOUND
+  - READY_TO_PATCH
+  - IMPLEMENTING
+  - VERIFYING
+  - SUPERVISOR_REVIEW
+  - CLOSED
+  - REJECTED
+  - CANCELLED
+  - BLOCKED_EXTERNAL
+  - BLOCKED_SUPERVISOR
+lifecycle_historical_aliases:
+  - INVESTIGATING
+  - PATCHED
+  - FAILED
+  - PASSED
+rules:
+  closed_requires_verifier_pass: true
+  closed_requires_supervisor_approve: true
+  implementer_cannot_self_approve: true
+  implementer_enabled: false
+  automation_enabled: false
+  missing_decision_is_not_approval: true
+  loop_policy: /opt/xiaozhi-clean/agent-lab/LOOP_POLICY.md
+  max_patch_attempts: 2
+  max_audit_revisits: 2
+  max_verification_runs: 3
+  max_subagent_invocations: 8
+tickets:
+  - id: T-0001
+    title: Inventory registered tools reachable by xz-clean-server
+    status: INVESTIGATING
+    auditor: pending
+    verifier: pending
+  - id: T-0002
+    title: Inventory reachable language-bearing surfaces (no translation)
+    status: NEW
+    auditor: pending
+    verifier: pending
+  - id: T-P2
+    title: Baseline test harness
+    status: VERIFYING
+  - id: T-P2.6-001
+    title: Supervisor bridge and loop policy
+    status: VERIFYING
+    implementer: DISABLED

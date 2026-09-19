@@ -1,0 +1,50 @@
+{
+  "project": "CLEAN_VI_MIGRATION",
+  "phase": "P2.6_SUPERVISOR_BRIDGE_AND_LOOP_POLICY",
+  "updated_at": "2026-09-19T16:45:00Z",
+  "clean_root": "/opt/xiaozhi-clean",
+  "live_container": "xz-clean-server",
+  "live_prompt": "/opt/xiaozhi-clean/overlays/lucy-lang/agent-base-prompt.txt",
+  "live_prompt_sha256": "3407a389979f5da0db2b1f929e253709cf5dee1165e1d90d6351a904d91aab83",
+  "git_opt_xiaozhi_clean": false,
+  "git_source_detached": "6afc54a",
+  "implementer_enabled": false,
+  "automation_enabled": false,
+  "runtime_touched": false,
+  "existing_files_modified": false,
+  "tickets": {
+    "T-0001": "VERIFYING",
+    "T-0002": "INVESTIGATING",
+    "T-P2": "VERIFYING",
+    "T-P2.6-001": "VERIFYING"
+  },
+  "bootstrap_status": "P2_COMPLETE",
+  "p2": {
+    "harness": "/opt/xiaozhi-clean/agent-lab/tests/run_baseline.py",
+    "report": "/opt/xiaozhi-clean/agent-lab/reports/P2-baseline.md",
+    "live_ws": "DISABLED"
+  },
+  "p26": {
+    "loop_policy": "/opt/xiaozhi-clean/agent-lab/LOOP_POLICY.md",
+    "supervisor_current": "/opt/xiaozhi-clean/agent-lab/supervisor/CURRENT.json",
+    "sync": "/opt/xiaozhi-clean/agent-lab/bin/supervisor_sync.py"
+  },
+  "registered_tools_live_static": [
+    "get_lunar",
+    "get_news_from_newsnow",
+    "get_weather",
+    "handle_exit_intent",
+    "play_music"
+  ],
+  "registered_tools_with_device_mcp": [
+    "get_lunar",
+    "get_news_from_newsnow",
+    "get_weather",
+    "handle_exit_intent",
+    "play_music",
+    "self_audio_speaker_set_volume",
+    "self_get_device_status",
+    "self_screen_set_brightness",
+    "self_screen_set_theme"
+  ]
+}

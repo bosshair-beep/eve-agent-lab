@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Supervisor outbox message",
+  "type": "object",
+  "required": [
+    "message_type",
+    "project",
+    "ticket_id",
+    "status",
+    "summary",
+    "budget",
+    "tests",
+    "runtime_touched",
+    "report",
+    "evidence",
+    "requested_decision"
+  ],
+  "properties": {
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "SUPERVISOR_REVIEW_REQUEST",
+        "CHECKPOINT",
+        "BLOCKED_NOTICE",
+        "STATUS"
+      ]
+    },
+    "project": { "const": "CLEAN_VI_MIGRATION" },
+    "ticket_id": { "type": "string" },
+    "status": { "type": "string" },
+    "summary": { "type": "string" },
+    "budget": {
+      "type": "object",
+      "required": [
+        "patch_attempts",
+        "audit_revisits",
+        "verification_runs",
+        "subagent_invocations"
+      ]
+    },
+    "tests": {
+      "type": "object",
+      "required": ["executed", "passed", "failed"]
+    },
+    "runtime_touched": { "type": "boolean" },
+    "report": { "type": "string" },
+    "evidence": { "type": "string" },
+    "requested_decision": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "APPROVE",
+          "REJECT",
+          "INVESTIGATE",
+          "STOP",
+          "APPROVE_RETRY",
+          "APPROVE_SCOPE_EXPANSION",
+          "APPROVE_NEW_BUDGET"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "project": "CLEAN_VI_MIGRATION",
+  "phase": "P2.6_SUPERVISOR_BRIDGE_AND_LOOP_POLICY",
+  "updated_at": "2026-09-19T16:55:00Z",
+  "automation_enabled": false,
+  "global_stop": false,
+  "implementer_enabled": false,
+  "safe_to_enable_implementer": false,
+  "active_ticket_id": "T-P2.6-001",
+  "github": {
+    "status": "WORKSTATION_GH_READY_VPS_AUTH_REQUIRED",
+    "repository": "bosshair-beep/eve-agent-lab",
+    "visibility": "public",
+    "push_test": "PENDING"
+  },
+  "loop_policy_path": "/opt/xiaozhi-clean/agent-lab/LOOP_POLICY.md",
+  "notes": "P2.6 control plane. No autonomous implementation. Vietnamese migration not started. apply_live() is the mandatory ticket mutation API."
+}

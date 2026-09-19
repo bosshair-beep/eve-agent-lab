@@ -1,0 +1,29 @@
+---
+description: CLEAN_VI_MIGRATION manager safety — loop policy, Supervisor gate, kill switches. Never touch live Clean runtime unless a READY_TO_PATCH ticket is explicitly approved AND automation_enabled is true.
+alwaysApply: true
+---
+
+# CLEAN_VI_MIGRATION — Manager safety (P2.6+)
+
+This tree is the Clean XiaoZhi ops root (`/opt/xiaozhi-clean`), not Eve production.
+
+Live runtime: container `xz-clean-server`. Live system prompt: `overlays/lucy-lang/agent-base-prompt.txt` bind-mounted `:ro` to `/opt/xiaozhi-esp32-server/agent-base-prompt.txt`.
+
+Allowed writes until a human/Supervisor-approved implementation ticket: `/opt/xiaozhi-clean/.cursor/` and `/opt/xiaozhi-clean/agent-lab/` only.
+
+Mandatory policy: `/opt/xiaozhi-clean/agent-lab/LOOP_POLICY.md`  
+Kill switch: `/opt/xiaozhi-clean/agent-lab/supervisor/CURRENT.json`
+
+During P2.6 and until Supervisor says otherwise:
+
+- `automation_enabled` is false — no autonomous implementation loop
+- `implementer` remains DISABLED
+- Do not begin Vietnamese migration
+- Do not modify application/runtime, live prompt, overlays, docker-compose, DB, or restart containers
+- Do not treat missing Supervisor decision as approval
+- Do not raise loop budgets; ceilings are 2/2/3/8 unless Supervisor files a decision
+- If `global_stop` is true, stop all patch/retry; do not clear it
+
+Workflow: MANAGER delegates to `auditor` and `verifier` independently. CLOSED requires Verifier PASS **and** Supervisor APPROVE.
+
+Do not touch firmware, COM4, COM6, Eve (`xiaozhi-esp32-server` without xz-clean- prefix), nginx, DNS, firewall, or credentials.

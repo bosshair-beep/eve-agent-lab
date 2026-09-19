@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Supervisor CURRENT.json",
+  "type": "object",
+  "required": [
+    "project",
+    "phase",
+    "automation_enabled",
+    "global_stop",
+    "implementer_enabled"
+  ],
+  "properties": {
+    "project": { "const": "CLEAN_VI_MIGRATION" },
+    "phase": { "type": "string" },
+    "automation_enabled": { "type": "boolean" },
+    "global_stop": { "type": "boolean" },
+    "implementer_enabled": { "type": "boolean" },
+    "updated_at": { "type": "string" }
+  }
+}
