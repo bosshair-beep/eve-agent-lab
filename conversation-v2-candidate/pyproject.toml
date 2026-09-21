@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eve-conversation-v2"
+version = "0.2.0"
+description = "Isolated Conversation/Core V2 candidate. Not production. Integration forbidden until human snapshot and approval."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Eve Conversation V2 candidate" }]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q --strict-markers"
+markers = [
+  "golden: V1 vs V2 behavioral compatibility",
+  "devil: adversarial invariant hunts",
+]
