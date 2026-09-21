@@ -34,7 +34,9 @@ class LocationOwner:
         value = (location or "").strip()
         if not value:
             return self.set_unknown(source=source, rejected=location)
-        if value in FORBIDDEN_LOCATION_FALLBACKS:
+        folded = value.casefold()
+        forbidden = {item.casefold() for item in FORBIDDEN_LOCATION_FALLBACKS}
+        if folded in forbidden or folded.startswith("广州"):
             self._snapshot = LocationSnapshot(
                 status=LocationStatus.REJECTED_FALLBACK,
                 location=None,

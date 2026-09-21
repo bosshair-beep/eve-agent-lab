@@ -63,6 +63,8 @@ class TtsPlaybackOwner:
         return self._state
 
     def transition(self, new: TtsPlaybackState, *, now_ms: int) -> TtsPlaybackState:
+        if new == self._state:
+            return self._state
         allowed = LEGAL_TRANSITIONS[self._state]
         if new not in allowed:
             raise V2Error(f"illegal TTS transition {self._state} -> {new}")

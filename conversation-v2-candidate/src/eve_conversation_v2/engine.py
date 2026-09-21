@@ -175,6 +175,7 @@ class ConversationEngineV2:
         self._frame_seq = 0
         self._last_activity_ms = now_ms
         self.last_fallback = None
+        self._history.clear()
         return self.turn.on_hello(session_id)
 
     def on_wake(self, *, now_ms: int | None = None) -> WakeSnapshot:
@@ -183,6 +184,17 @@ class ConversationEngineV2:
             raise V2Error("wake before hello")
         if not self.turn.snapshot().open:
             self.turn.open_turn()
+        if self.listen.snapshot().conversation_open:
+            # Repeated wake while live: isolate wake-sourced PCM only.
+            # Re-blocking all PCM would mute the open conversation (Câm).
+            snap = self.asr.snapshot()
+            self.turn.emit(
+                TimelineEventName.WAKE,
+                asr_epoch=snap.asr_epoch,
+                qwen_session_gen=snap.qwen_session_gen,
+                detail=self.identity.greeting_text(),
+            )
+            return self.wake.snapshot()
         self.wake.start_wake()
         # Qwen ready must not open conversation.
         snap = self.asr.snapshot()
@@ -199,7 +211,11 @@ class ConversationEngineV2:
         self._stamp(now_ms)
         if not self.turn.snapshot().open:
             self.turn.open_turn()
+        self._envelope = None
+        self._intent = None
+        self._llm_text = None
         self.listen.apply_listen_start_boundary()
+        self.pcm.begin_turn_audio()
         self.pcm.discard_stale_and_wake_buffers()
         self.wake.apply_listen_start_boundary()
         asr = self.asr.snapshot()
@@ -311,6 +327,7 @@ class ConversationEngineV2:
     def on_asr_disconnect(self, *, now_ms: int | None = None) -> AsrSessionSnapshot:
         self._stamp(now_ms)
         self.pcm.disarm()
+        self.pcm.discard_pending(DiscardReason.STALE_EPOCH)
         return self.asr.disconnect()
 
     def on_asr_reconnect(self, *, now_ms: int | None = None) -> AsrSessionSnapshot:
@@ -327,16 +344,22 @@ class ConversationEngineV2:
 
     def on_asr_final(self, raw_asr: str, *, epoch: int, session_gen: int, now_ms: int | None = None) -> UtteranceEnvelope:
         self._stamp(now_ms)
+        turn = self.turn.snapshot()
+        if not turn.open:
+            raise StaleSessionError("ASR final while turn not open")
+        if not self.listen.snapshot().conversation_open:
+            raise StaleSessionError("ASR final while conversation closed")
+        if self._envelope is not None and self._envelope.turn_id == str(turn.turn_id):
+            raise StaleSessionError("duplicate ASR final for this turn")
         self.asr.accept_final(epoch=epoch, session_gen=session_gen)
         asr = self.asr.snapshot()
         lang = self.language.snapshot()
-        turn = self.turn.snapshot()
         self.turn.emit(
             TimelineEventName.ASR_FINAL,
             asr_epoch=asr.asr_epoch,
             qwen_session_gen=asr.qwen_session_gen,
         )
-        sent = [r for r in self.pcm.records if r.disposition == PcmDisposition.SENT]
+        sent_n = self.pcm.snapshot().turn_sent_count
         env = UtteranceEnvelope(
             session_id=str(turn.session_id),
             turn_id=str(turn.turn_id),
@@ -349,8 +372,8 @@ class ConversationEngineV2:
             conversation_language=lang.conversation_language,
             recent_history=tuple(self._history[-8:]),
             audio_metadata=AudioMetadata(
-                duration_ms=max(0, len(sent) * 60),
-                silero_frames=len(sent),
+                duration_ms=max(0, sent_n * 60),
+                silero_frames=sent_n,
                 preroll_available=False,
                 preroll_sent=False,
                 qwen_window_ms=0,
@@ -477,6 +500,10 @@ class ConversationEngineV2:
 
     def on_tts_start(self, *, now_ms: int | None = None) -> TtsPlaybackState:
         self._stamp(now_ms)
+        if self.turn.snapshot().fallback_used:
+            raise V2Error("V2 TTS suppressed after V1 fallback")
+        if self.turn.snapshot().cancelled:
+            raise V2Error("V2 TTS suppressed after cancel")
         asr = self.asr.snapshot()
         st = self.tts.transition(TtsPlaybackState.GENERATING, now_ms=self.turn.now_ms)
         self.turn.emit(
@@ -521,8 +548,10 @@ class ConversationEngineV2:
         self._stamp(now_ms)
         self.pcm.discard_pending(DiscardReason.TURN_CANCELLED)
         self.pcm.disarm()
-        self.tts.interrupt()
-        self.tts.transition(TtsPlaybackState.IDLE, now_ms=self.turn.now_ms)
+        self.listen.close()
+        if self.tts.snapshot().state != TtsPlaybackState.IDLE:
+            self.tts.interrupt()
+            self.tts.transition(TtsPlaybackState.IDLE, now_ms=self.turn.now_ms)
         return self.turn.cancel()
 
     def on_idle_timeout(self, *, now_ms: int | None = None) -> TurnSnapshot:
@@ -564,6 +593,13 @@ class ConversationEngineV2:
                 qwen_session_gen=asr.qwen_session_gen,
                 detail=reason,
             )
+            self.pcm.discard_pending(DiscardReason.TURN_CANCELLED)
+            self.pcm.disarm()
+            self.listen.close()
+            if self.tts.snapshot().state != TtsPlaybackState.IDLE:
+                self.tts.interrupt()
+                self.tts.transition(TtsPlaybackState.IDLE, now_ms=self.turn.now_ms)
+            self.turn.cancel()
         self.last_fallback = decision
         return decision
 

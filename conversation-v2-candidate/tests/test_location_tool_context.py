@@ -19,7 +19,9 @@ def test_chinese_fallback_rejected():
     assert e.location_snapshot().status == LocationStatus.REJECTED_FALLBACK
     assert e.location_snapshot().location is None
     with pytest.raises(ForbiddenLocationFallbackError):
-        e.location.set_known("未知位置", "legacy")
+        e.location.set_known("广州市", "legacy")
+    with pytest.raises(ForbiddenLocationFallbackError):
+        e.location.set_known("GUANGZHOU", "legacy")
 
 
 def test_weather_tool_clarifies_location_unknown():

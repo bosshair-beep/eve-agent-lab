@@ -38,6 +38,7 @@ class PcmSnapshot:
     pending_count: int
     sent_ids: frozenset[int]
     discarded_ids: frozenset[int]
+    turn_sent_count: int
 
 
 class PcmDeliveryOwner:
@@ -51,6 +52,7 @@ class PcmDeliveryOwner:
         self._discarded_ids: set[int] = set()
         self.records: list[PcmRecord] = []
         self.first_pcm_sent = False
+        self._turn_sent_count = 0
 
     def snapshot(self) -> PcmSnapshot:
         return PcmSnapshot(
@@ -58,6 +60,7 @@ class PcmDeliveryOwner:
             pending_count=len(self._pending),
             sent_ids=frozenset(self._sent_ids),
             discarded_ids=frozenset(self._discarded_ids),
+            turn_sent_count=self._turn_sent_count,
         )
 
     def reset(self, *, reason: DiscardReason = DiscardReason.SESSION_RESET) -> None:
@@ -67,6 +70,10 @@ class PcmDeliveryOwner:
         self._discarded_ids.clear()
         self.records.clear()
         self.first_pcm_sent = False
+        self._turn_sent_count = 0
+
+    def begin_turn_audio(self) -> None:
+        self._turn_sent_count = 0
 
     def disarm(self) -> None:
         self._post_flush_live = False
@@ -167,6 +174,7 @@ class PcmDeliveryOwner:
             source=frame.source,
         )
         self.records.append(rec)
+        self._turn_sent_count += 1
         if not self.first_pcm_sent:
             self.first_pcm_sent = True
         return rec

@@ -46,6 +46,13 @@ class AsrSessionOwner:
         return self.snapshot()
 
     def disconnect(self) -> AsrSessionSnapshot:
+        """Socket died. New epoch so in-flight finals cannot enter the next ready."""
+        if self._asr_epoch == 0:
+            self._asr_epoch = 1
+            self._qwen_session_gen = 1
+        else:
+            self._asr_epoch += 1
+            self._qwen_session_gen += 1
         self._ready = False
         self._connecting = False
         return self.snapshot()
@@ -59,8 +66,9 @@ class AsrSessionOwner:
         return self.snapshot()
 
     def reset_session(self) -> AsrSessionSnapshot:
-        self._asr_epoch = 0
-        self._qwen_session_gen = 0
+        # Never reuse epoch/gen across hellos (stale finals must not enter a new turn).
+        self._asr_epoch += 1
+        self._qwen_session_gen += 1
         self._ready = False
         self._connecting = False
         return self.snapshot()

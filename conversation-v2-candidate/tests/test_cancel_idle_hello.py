@@ -37,7 +37,7 @@ def test_new_hello_session_recovery_rejects_stale():
     e.on_pcm(b"old", source="conversation")
     e.on_hello("s2", now_ms=50)
     assert e.turn_snapshot().session_id == "s2"
-    assert e.asr_snapshot().asr_epoch == 0
+    assert e.asr_snapshot().asr_epoch != old_epoch
     assert e.listen_snapshot().conversation_open is False
     rec = e.on_pcm(b"new", source="conversation")
     assert rec.reason in (DiscardReason.CONVERSATION_CLOSED, DiscardReason.ENGINE_NOT_PRIMARY)
