@@ -1,0 +1,57 @@
+# Conversation/Core V2 candidate (isolated)
+
+**WORK_ID:** `EVE_CONVERSATION_CORE_V2_BUILD`  
+**MODE:** `ISOLATED_IMPLEMENTATION`  
+**PRODUCTION:** `READ_ONLY`  
+**GATE-V2-INTEGRATE:** `PENDING_HUMAN_SNAPSHOT_AND_APPROVAL`
+
+This tree is an isolated Conversation/Core V2 candidate. It is **not** live eve.ai.
+It must not be deployed, integrated, or used to restart production tonight.
+
+## Location
+
+| | |
+|---|---|
+| `V2_WORK_ROOT` | `conversation-v2-candidate/` (this directory, inside `eve-agent-lab`) |
+| Intended future deploy root | `/opt/eve/releases/conversation-v2-candidate/` (**not created tonight**) |
+| `BASELINE_SOURCE` | **UNAVAILABLE in this environment** (no Eve application tree; production READ-ONLY; no VPS write/SSH) |
+| Production files changed | **NONE** |
+
+## Run tests
+
+```bash
+cd conversation-v2-candidate
+python3 -m pip install -e '.[test]'
+python3 -m pytest
+```
+
+## What this is
+
+A testable ownership/state-machine implementation of the V2 pipeline:
+
+DEVICE AUDIO → transport/Opus → PCM → wake/listen → VAD → ASR →
+`raw_asr` → `UtteranceEnvelope` → `SuspiciousUtteranceResolverHook` (NO-OP) →
+`resolved_utterance` → Intent → Tool → LLM → TTS → Playback → turn end
+
+`resolved_utterance = raw_asr`. MiniLM / RUE is **not** implemented.
+
+## Documents
+
+| Output | Path |
+|---|---|
+| A Architecture | `docs/architecture.md` |
+| C State machines | `docs/state-machines.md` |
+| D Ownership matrix | `docs/ownership-matrix.md` |
+| E UtteranceEnvelope | `docs/utterance-envelope.md` |
+| G Feature flags | `docs/feature-flags.md` |
+| I Behavior matrix | `docs/behavior-matrix.md` |
+| J Integration plan | `docs/integration-plan.md` |
+| K Rollback plan | `docs/rollback-plan.md` |
+| Open tracks | `docs/known-open-tracks.md` |
+| Final report | `docs/FINAL_REPORT.md` |
+
+## Non-goals tonight
+
+Do not: deploy V2, restart production, modify production DB/prompt/config/firmware,
+change ASR parameters, change TTS provider, integrate MiniLM/RUE, change Clean,
+remove the proven wake-flush fix from the live baseline.
